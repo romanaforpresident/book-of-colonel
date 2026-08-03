@@ -4,20 +4,42 @@
     <title>indiancanyons</title>
 
     <style>
-        body {
-            background-color: black;
-            color: white;
-        }
+       body {
+    background-color: black;
+    color: white;
+}
 
-        #violetVideo {
-            display: none;
-            width: 100%;
-            height: 100%;
-            background: black;
-        }
+#videoOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+}
+
+#violetVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+	 
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
     </style>
 </head>
 
+
+
+
+	
 <body>
 
 <h1 style="color: cyan">I dont even know!you know what i know? the tunnels. wow thank you cross.</h1>
@@ -32,9 +54,18 @@ the indian canyons are not what i expected. although they are beautiful, it is q
 the elephant and his charriot disapeared into the void. suddenly, the constant buzz disapeared, before being replaced by a chipper melody, comprised of instruments no human has ever heard before. before long it was gone, and the buzz returned, but this time it felt different.
 </p>
 
-<video id="violetVideo">
-    <source src="../videos/violetplains.mp4" type="video/mp4">
-</video>
+
+
+
+
+
+
+	
+<div id="videoOverlay">
+    <video id="violetVideo" autoplay>
+        <source src="../videos/violetplains.mp4" type="video/mp4">
+    </video>
+</div>
 
 
 
@@ -42,47 +73,55 @@ the elephant and his charriot disapeared into the void. suddenly, the constant b
 	
 	
 <script>
+const overlay = document.getElementById("videoOverlay");
 const video = document.getElementById("violetVideo");
 
 async function playViolet() {
-    video.style.display = "block";
+    overlay.style.display = "flex";
+
+    video.pause();
     video.currentTime = 0;
 
     try {
-        if (video.requestFullscreen) {
-            await video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) {
-            video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) {
-            video.msRequestFullscreen();
+        if (overlay.requestFullscreen) {
+            await overlay.requestFullscreen();
+        } else if (overlay.webkitRequestFullscreen) {
+            overlay.webkitRequestFullscreen();
+        } else if (overlay.msRequestFullscreen) {
+            overlay.msRequestFullscreen();
         }
 
         await video.play();
-    } catch (e) {
-        console.error(e);
+    } catch (err) {
+        console.error(err);
     }
 }
 
-function hideVideo() {
+function hideOverlay() {
     if (!document.fullscreenElement) {
         video.pause();
         video.currentTime = 0;
-        video.style.display = "none";
+        overlay.style.display = "none";
     }
 }
 
-document.addEventListener("fullscreenchange", hideVideo);
-document.addEventListener("webkitfullscreenchange", hideVideo);
+document.addEventListener("fullscreenchange", hideOverlay);
+document.addEventListener("webkitfullscreenchange", hideOverlay);
+
+
+video.addEventListener("ended", async () => {
+    if (document.fullscreenElement) {
+        await document.exitFullscreen();
+    }
+    hideOverlay();
+});
+
 
 
 
 
 	
 </script>
-
-
-
-
 
 
 	
