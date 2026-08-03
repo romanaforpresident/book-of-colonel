@@ -116,7 +116,9 @@ video.addEventListener("ended", async () => {
     hideOverlay();
 });
 
-
+document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+});
 
 
 
