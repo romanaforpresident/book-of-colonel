@@ -121,6 +121,16 @@ document.addEventListener("contextmenu", function (e) {
 });
 
 
+document.addEventListener("keydown", function (e) {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && ["u", "s", "p"].includes(e.key.toLowerCase())) ||
+        (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(e.key.toLowerCase()))
+    ) {
+        e.preventDefault();
+    }
+});
+
 
 	
 </script>
